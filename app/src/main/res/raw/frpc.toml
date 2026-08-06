@@ -13,7 +13,7 @@ auth.token = "88888888"
 #[二选一即可]每台机器的 name 和 remotePort 不可重复，通过 http://88.88.88.88:5000 访问
 [[proxies]]
 #同一个frps下，多台设备的 name 不可重复
-name = "SmsForwarder-TCP-001"
+name = "KoSync-TCP-001"
 type = "tcp"
 localIP = "127.0.0.1"
 localPort = 5000
@@ -23,7 +23,7 @@ remotePort = 5000
 #[二选一即可]每台机器的 name 和 customDomains 不可重复，通过 http://smsf.demo.com 访问
 [[proxies]]
 #同一个frps下，多台设备的 name 不可重复
-name = "SmsForwarder-HTTP-001"
+name = "KoSync-HTTP-001"
 type = "http"
 localPort = 5000
 #只要修改下面这一行（在frps端将域名反代到vhost_http_port）

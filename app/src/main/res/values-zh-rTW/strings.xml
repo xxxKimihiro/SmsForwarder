@@ -11,7 +11,7 @@
     <string name="insert_tag_receive_time">接收時間</string>
     <string name="insert_tag_current_time">當前時間</string>
     <string name="insert_tag_device_name">設備名稱</string>
-    <string name="insert_tag_app_version">SmsF版本</string>
+    <string name="insert_tag_app_version">KoSync版本</string>
     <string name="insert_tag_call_type">通話類型</string>
     <string name="insert_tag_location">定位資訊</string>
     <string name="insert_tag_location_longitude">定位經度</string>
@@ -79,17 +79,17 @@
     <string name="about_item_wechat_miniprogram" formatted="false">微信小程序</string>
     <string name="about_cache_purged">已清理緩存</string>
     <string name="about_frpc_deleted">已刪除動態庫，重啟應用以生效！</string>
-    <string name="about_copyright">© %1$s PPPSCN 版權所有。</string>
+    <string name="about_copyright">© %1$s KoSync 版權所有。</string>
     <string name="about_item_open_source">開源倉庫</string>
     <string name="about_item_github">GitHub</string>
     <string name="about_item_gitee">Gitee</string>
     <string name="about_item_donation_link">打賞名單</string>
-    <string name="url_project_github">https://github.com/pppscn/SmsForwarder</string>
-    <string name="url_project_gitee">https://gitee.com/pp/SmsForwarder</string>
-    <string name="url_help">https://gitee.com/pp/SmsForwarder/wikis/pages</string>
-    <string name="url_donation_link">https://gitee.com/pp/SmsForwarder.wiki/raw/master/%E6%89%93%E8%B5%8F%E5%90%8D%E5%8D%95.md</string>
-    <string name="url_wechat_miniprogram">https://gitee.com/pp/SmsForwarder/raw/main/pic/wechat_miniprogram.jpg</string>
-    <string name="url_tips">https://gitee.com/pp/SmsForwarder.wiki/raw/master/tips_tc.json</string>
+    <string name="url_project_github">https://github.com/xxxKimihiro</string>
+    <string name="url_project_gitee">https://github.com/xxxKimihiro</string>
+    <string name="url_help">https://github.com/xxxKimihiro</string>
+    <string name="url_donation_link">https://github.com/xxxKimihiro</string>
+    <string name="url_wechat_miniprogram">https://github.com/xxxKimihiro</string>
+    <string name="url_tips"></string>
 
     <string name="lab_yes">是</string>
     <string name="lab_no">否</string>
@@ -138,8 +138,8 @@
     <string name="tipServiceRunning">Frpc內網穿透服務運行中</string>
     <string name="tipWaitService">正在啟動服務</string>
 
-    <string name="app_name">簡訊轉發器</string>
-    <string name="notification_content">不僅只轉發簡訊，備用機必備神器！\n免費開源，禁止販賣！</string>
+    <string name="app_name">KoSync</string>
+    <string name="notification_content">訊息同步助手，本地可控。\n免費自用，禁止販賣！</string>
     <!--Common-->
     <string name="cancel">取消</string>
     <string name="discard">丟棄</string>
@@ -352,7 +352,7 @@
     <string name="forward_sms">轉發簡訊廣播</string>
     <string name="forward_sms_tips">請授予讀取簡訊、通知類簡訊、發送簡訊等權限，關閉驗證碼保護</string>
     <string name="sms_command">簡訊指令</string>
-    <string name="sms_command_tips">根據簡訊指令開關對應功能，指令格式：smsf#功能名#動作名</string>
+    <string name="sms_command_tips">根據簡訊指令開關對應功能，指令格式：kosync#功能名#動作名</string>
     <string name="close_to_earpiece_turn_off_screen">靠近聽筒關屏</string>
     <string name="close_to_earpiece_turn_off_screen_tips">手動關閉系統超時鎖屏後，蓋住聽筒即可關屏並保持喚醒狀態</string>
     <string name="safe_phone_tips">僅處理指定手機請求，多個手機以逗號分隔</string>
@@ -412,8 +412,8 @@
     <string name="user_app">用戶應用</string>
     <string name="system_app">系統應用</string>
     <string name="tips_get_installed_apps">請先授予獲取應用列表權限</string>
-    <string name="tips_notification">請先授予發送通知權限，有利於《簡訊轉發器》保活！</string>
-    <string name="tips_notification_listener">請先授予《簡訊轉發器》通知使用權，否則無法轉發應用程式通知，已經自動關閉轉發！</string>
+    <string name="tips_notification">請先授予發送通知權限，有利於《KoSync》保活！</string>
+    <string name="tips_notification_listener">請先授予《KoSync》通知使用權，否則無法轉發應用程式通知，已經自動關閉轉發！</string>
     <string name="pushplus_website">官網地址</string>
     <string name="pushplus_plus">www.pushplus.plus</string>
     <string name="pushplus_hxtrip">pushplus.hxtrip.com</string>
@@ -579,8 +579,8 @@
     <string name="tip_can_not_get_sim_info">未獲取到卡槽%d中的SIM卡信息</string>
     <string name="auto_check">啟動時檢查</string>
     <string name="check_update">檢查更新</string>
-    <string name="join_preview_program">加入SmsF預覽體驗計劃</string>
-    <string name="join_preview_program_tips">檢查SmsF每周構建版更新，率先體驗新功能與Bug修復</string>
+    <string name="join_preview_program">加入KoSync預覽體驗計劃</string>
+    <string name="join_preview_program_tips">檢查KoSync每周構建版更新，率先體驗新功能與Bug修復</string>
     <string name="clear_cache">清理緩存</string>
     <string name="delete_frpc">刪除動態庫</string>
 
@@ -601,7 +601,7 @@
     <string name="bark_server_regex">^https?://[^/]+/[^/]+/.*</string>
     <string name="bark_server_error">Url格式錯誤，例：https://api.day.app/XXXXXXXX/</string>
     <string name="bark_group">分組名稱</string>
-    <string name="bark_group_tips">可選，例：簡訊轉發器</string>
+    <string name="bark_group_tips">可選，例：KoSync</string>
     <string name="bark_icon">消息圖標</string>
     <string name="bark_icon_tips">可選，填寫Url，圖片不要太大</string>
     <string name="bark_call">持續提醒</string>
@@ -610,7 +610,7 @@
     <string name="bark_badge">消息角標</string>
     <string name="bark_badge_tips">可選，例：888</string>
     <string name="bark_url">消息鏈接</string>
-    <string name="bark_url_tips">可選，例：https://github.com/pppscn/SmsForwarder</string>
+    <string name="bark_url_tips">可選，例：https://github.com/xxxKimihiro</string>
     <string name="bark_level">通知級別</string>
     <string name="bark_level_critical">重要警告：靜音模式下也會響鈴</string>
     <string name="bark_level_active">立即亮屏顯示通知</string>
@@ -684,7 +684,7 @@
     <string name="privacy_content_4"> 向你說明我們會如何收集、存儲、保護、使用及對外提供你的信息，並說明你享有的權利。\n</string>
     <string name="privacy_content_5">更多詳情，敬請查閱 </string>
     <string name="privacy_content_6">全文。\n\n</string>
-    <string name="privacy_content_7">請先授予發送通知權限，有利於《簡訊轉發器》保活！</string>
+    <string name="privacy_content_7">請先授予發送通知權限，有利於《KoSync》保活！</string>
     <string name="request_succeeded">請求成功</string>
     <string name="request_failed">請求失敗：</string>
     <string name="request_failed_tips">請求失敗：%s</string>
@@ -1178,7 +1178,7 @@
     <string name="specified_task">指定任務</string>
 
     <string name="multi_languages">多語言設置</string>
-    <string name="multi_languages_tips">SmsForwarder啟動時界面預設顯示的語言</string>
+    <string name="multi_languages_tips">KoSync啟動時界面預設顯示的語言</string>
     <string name="multi_languages_toast">需要重新啟動應用程式以切換至您選擇的語言</string>
     <string name="follow_system">跟隨系統</string>
     <string name="simplified_chinese">简体中文</string>

@@ -77,6 +77,6 @@ jobs:
         if: env.skip != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: SmsForwarder-weekly
-          path: ${{ env.OUTPUT_DIR }}/SmsF_*_release.apk
+          name: KoSync-weekly
+          path: ${{ env.OUTPUT_DIR }}/KoSync_*_release.apk
           if-no-files-found: error
