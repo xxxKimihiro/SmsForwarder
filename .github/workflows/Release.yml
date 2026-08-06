@@ -1,58 +1,82 @@
 name: Release
 
-# 触发器
+# fork 自用：签名来自 GitHub Secrets，不把密钥提交进仓库
+# 需要配置：KEYSTORE_BASE64 / KEYSTORE_PASS / ALIAS_NAME / ALIAS_PASS
+# - Actions 页手动 Run workflow：打 release APK 并上传 Artifact
+# - 推送 v* tag：打包并创建 GitHub Release
 on:
   push:
     tags:
-      - v*
-  pull_request:
-    tags:
-      - v*
+      - 'v*'
   workflow_dispatch:
-    inputs:
-      root_sol:
-        description: "Release Title"
-        required: true
-        default: "SmsForwarder"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OUTPUT_DIR: ${{ github.workspace }}/build/app/outputs/apk/release
     steps:
-      # 检出代码
-      - uses: actions/checkout@v4
-      # 设置jdk环境为11
-      - name: set up JDK 11
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 11
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '11'
           java-package: jdk
-      # 获取打包秘钥
-      - name: Checkout Android Keystore
-        uses: actions/checkout@v4
-        with:
-          repository: pppscn/keystore
-          token: ${{ secrets.TOKEN }} # 连接仓库的token,需要单独配置
-          path: keystore # 仓库的根目录名
-      # 打包release
-      - name: Build with Gradle
-        run: bash ./gradlew assembleRelease
-      # 创建release
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Prepare signing keystore from secrets
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          ALIAS_NAME: ${{ secrets.ALIAS_NAME }}
+          ALIAS_PASS: ${{ secrets.ALIAS_PASS }}
+        run: |
+          set -euo pipefail
+          if [ -z "${KEYSTORE_BASE64}" ] || [ -z "${KEYSTORE_PASS}" ] || [ -z "${ALIAS_NAME}" ] || [ -z "${ALIAS_PASS}" ]; then
+            echo "Missing signing secrets. Please add repository secrets:"
+            echo "  KEYSTORE_BASE64, KEYSTORE_PASS, ALIAS_NAME, ALIAS_PASS"
+            exit 1
+          fi
+          mkdir -p keystore
+          echo "${KEYSTORE_BASE64}" | base64 -d > keystore/smsforwarder-self.p12
+          {
+            echo "keyAlias=${ALIAS_NAME}"
+            echo "keyPassword=${ALIAS_PASS}"
+            echo "storeFile=keystore/smsforwarder-self.p12"
+            echo "storePassword=${KEYSTORE_PASS}"
+          } > keystore/keystore.properties
+          test -s keystore/smsforwarder-self.p12
+          echo "Signing keystore prepared."
+
+      - name: Build release APKs
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew
+          ./gradlew assembleRelease --no-daemon
+
+      - name: List outputs
+        run: ls -lah "${OUTPUT_DIR}"
+
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: ${{ github.ref }}
-          release_name: SmsForwarder ${{ github.ref }}
+          name: SmsForwarder-release
+          path: ${{ env.OUTPUT_DIR }}/SmsF_*_release.apk
+          if-no-files-found: error
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: SmsForwarder ${{ github.ref_name }}
           draft: false
           prerelease: false
-      # 上传至release的资源
-      - name: Upload release binaries
-        uses: alexellis/upload-assets@0.2.2
+          generate_release_notes: true
+          files: ${{ env.OUTPUT_DIR }}/SmsF_*_release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          asset_paths: '["./build/app/outputs/apk/release/SmsF_*"]'
