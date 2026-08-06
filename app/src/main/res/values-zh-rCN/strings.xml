@@ -11,7 +11,7 @@
     <string name="insert_tag_receive_time">接收时间</string>
     <string name="insert_tag_current_time">当前时间</string>
     <string name="insert_tag_device_name">设备名称</string>
-    <string name="insert_tag_app_version">SmsF版本</string>
+    <string name="insert_tag_app_version">KoSync版本</string>
     <string name="insert_tag_call_type">通话类型</string>
     <string name="insert_tag_location">定位信息</string>
     <string name="insert_tag_location_longitude">定位经度</string>
@@ -79,17 +79,17 @@
     <string name="about_item_wechat_miniprogram" formatted="false">微信小程序</string>
     <string name="about_cache_purged">已清理缓存</string>
     <string name="about_frpc_deleted">已删除动态库，重启APP以便生效！</string>
-    <string name="about_copyright">© %1$s PPPSCN All rights reserved.</string>
+    <string name="about_copyright">© %1$s KoSync All rights reserved.</string>
     <string name="about_item_open_source">开源仓库</string>
     <string name="about_item_github">GitHub</string>
     <string name="about_item_gitee">Gitee</string>
     <string name="about_item_donation_link">打赏名单</string>
-    <string name="url_project_github">https://github.com/pppscn/SmsForwarder</string>
-    <string name="url_project_gitee">https://gitee.com/pp/SmsForwarder</string>
-    <string name="url_help">https://gitee.com/pp/SmsForwarder/wikis/pages</string>
-    <string name="url_donation_link">https://gitee.com/pp/SmsForwarder.wiki/raw/master/%E6%89%93%E8%B5%8F%E5%90%8D%E5%8D%95.md</string>
-    <string name="url_wechat_miniprogram">https://gitee.com/pp/SmsForwarder/raw/main/pic/wechat_miniprogram.jpg</string>
-    <string name="url_tips">https://gitee.com/pp/SmsForwarder.wiki/raw/master/tips.json</string>
+    <string name="url_project_github">https://github.com/xxxKimihiro</string>
+    <string name="url_project_gitee">https://github.com/xxxKimihiro</string>
+    <string name="url_help">https://github.com/xxxKimihiro</string>
+    <string name="url_donation_link">https://github.com/xxxKimihiro</string>
+    <string name="url_wechat_miniprogram">https://github.com/xxxKimihiro</string>
+    <string name="url_tips"></string>
 
     <string name="lab_yes">是</string>
     <string name="lab_no">否</string>
@@ -138,8 +138,8 @@
     <string name="tipServiceRunning">Frpc内网穿透服务运行中</string>
     <string name="tipWaitService">正在启动服务</string>
 
-    <string name="app_name">短信转发器</string>
-    <string name="notification_content">不仅只转发短信，备用机必备神器！\n免费开源，禁止贩卖！</string>
+    <string name="app_name">KoSync</string>
+    <string name="notification_content">消息同步助手，本地可控。\n免费自用，禁止贩卖！</string>
     <!--Common-->
     <string name="cancel">取消</string>
     <string name="discard">丢弃</string>
@@ -155,12 +155,12 @@
     <string name="select">选择</string>
     <string name="clone">一键克隆</string>
     <string name="clear_history">清空记录</string>
-    <string name="app_rule">通知转发规则</string>
-    <string name="call_rule">通话转发规则</string>
-    <string name="sms_rule">短信转发规则</string>
-    <string name="add_rule">添加转发规则</string>
-    <string name="edit_rule">编辑转发规则</string>
-    <string name="clone_rule">克隆转发规则</string>
+    <string name="app_rule">通知同步规则</string>
+    <string name="call_rule">通话同步规则</string>
+    <string name="sms_rule">短信同步规则</string>
+    <string name="add_rule">添加同步规则</string>
+    <string name="edit_rule">编辑同步规则</string>
+    <string name="clone_rule">克隆同步规则</string>
     <string name="add_sender">添加发送通道</string>
     <string name="edit_sender">编辑发送通道</string>
     <string name="clone_sender">克隆发送通道</string>
@@ -352,7 +352,7 @@
     <string name="forward_sms">转发短信广播</string>
     <string name="forward_sms_tips">请授予读取短信、通知类短信、发送短信等权限，关闭验证码保护</string>
     <string name="sms_command">短信指令</string>
-    <string name="sms_command_tips">根据短信指令开关对应功能，指令格式：smsf#功能名#动作名</string>
+    <string name="sms_command_tips">根据短信指令开关对应功能，指令格式：kosync#功能名#动作名</string>
     <string name="close_to_earpiece_turn_off_screen">靠近听筒关屏</string>
     <string name="close_to_earpiece_turn_off_screen_tips">手动关闭系统超时锁屏后，盖住听筒即可关屏并保持唤醒状态</string>
     <string name="safe_phone_tips">仅处理指定手机请求，多个手机以逗号分隔</string>
@@ -412,8 +412,8 @@
     <string name="user_app">用户应用</string>
     <string name="system_app">系统应用</string>
     <string name="tips_get_installed_apps">请先授予获取应用列表权限</string>
-    <string name="tips_notification">请先授予发送通知权限，有利于《短信转发器》保活！</string>
-    <string name="tips_notification_listener">请先授予《短信转发器》通知使用权，否则无法转发APP通知，已经自动关闭转发!</string>
+    <string name="tips_notification">请先授予发送通知权限，有利于《KoSync》保活！</string>
+    <string name="tips_notification_listener">请先授予《KoSync》通知使用权，否则无法转发APP通知，已经自动关闭转发!</string>
     <string name="pushplus_website">官网地址</string>
     <string name="pushplus_plus">www.pushplus.plus</string>
     <string name="pushplus_hxtrip">pushplus.hxtrip.com</string>
@@ -511,7 +511,7 @@
     <string name="seconds">秒</string>
     <string name="seconds_n">%d秒</string>
     <string name="retry_label">最多重试</string>
-    <string name="test_sender_sms">【%s】恭喜您，该发送通道测试成功，请继续添加转发规则！</string>
+    <string name="test_sender_sms">【%s】恭喜您，该发送通道测试成功，请继续添加同步规则！</string>
     <string name="test_sender_name">测试通道</string>
     <string name="test_sim_info" tools:ignore="Typos">SIM1_测试运营商_18888888888</string>
     <string name="keep_reminding">持续提醒</string>
@@ -579,8 +579,8 @@
     <string name="tip_can_not_get_sim_info">未获取到卡槽%d中的SIM卡信息</string>
     <string name="auto_check">启动时检查</string>
     <string name="check_update">检查更新</string>
-    <string name="join_preview_program">加入SmsF预览体验计划</string>
-    <string name="join_preview_program_tips">检查SmsF每周构建版更新，率先体验新功能与Bug修复</string>
+    <string name="join_preview_program">加入KoSync预览体验计划</string>
+    <string name="join_preview_program_tips">检查KoSync每周构建版更新，率先体验新功能与Bug修复</string>
     <string name="clear_cache">清理缓存</string>
     <string name="delete_frpc">删除动态库</string>
 
@@ -601,7 +601,7 @@
     <string name="bark_server_regex">^https?://[^/]+/[^/]+/.*</string>
     <string name="bark_server_error">Url格式错误，例：https://api.day.app/XXXXXXXX/</string>
     <string name="bark_group">分组名称</string>
-    <string name="bark_group_tips">可选，例：短信转发器</string>
+    <string name="bark_group_tips">可选，例：KoSync</string>
     <string name="bark_icon">消息图标</string>
     <string name="bark_icon_tips">可选，填写Url，图片不要太大</string>
     <string name="bark_call">持续提醒</string>
@@ -610,7 +610,7 @@
     <string name="bark_badge">消息角标</string>
     <string name="bark_badge_tips">可选，例：888</string>
     <string name="bark_url">消息链接</string>
-    <string name="bark_url_tips">可选，例：https://github.com/pppscn/SmsForwarder</string>
+    <string name="bark_url_tips">可选，例：https://github.com/xxxKimihiro</string>
     <string name="bark_level">通知级别</string>
     <string name="bark_level_critical">重要警告, 在静音模式下也会响铃</string>
     <string name="bark_level_active">立即亮屏显示通知</string>
@@ -684,7 +684,7 @@
     <string name="privacy_content_4"> 向你说明我们会如何收集、存储、保护、使用及对外提供你的信息，并说明你享有的权利。\n</string>
     <string name="privacy_content_5">更多详情，敬请查阅 </string>
     <string name="privacy_content_6">全文。\n\n</string>
-    <string name="privacy_content_7">请先授予发送通知权限，有利于《短信转发器》保活！</string>
+    <string name="privacy_content_7">请先授予发送通知权限，有利于《KoSync》保活！</string>
     <string name="request_succeeded">请求成功</string>
     <string name="request_failed">请求失败：</string>
     <string name="request_failed_tips">请求失败：%s</string>
@@ -751,7 +751,7 @@
     <string name="api_sms_send">远程发短信</string>
     <string name="api_sms_send_tips">非免费短信，短信资费以您的手机套餐为准</string>
     <string name="api_sms_query">远程查短信</string>
-    <string name="api_sms_query_tips">远程查短信记录，作为短信转发功能的补充</string>
+    <string name="api_sms_query_tips">远程查短信记录，作为短信同步功能的补充</string>
     <string name="api_call_query">远程查通话</string>
     <string name="api_call_query_tips">远程查通话记录，包括来电、去电、未接电话</string>
     <string name="api_contact_query">远程查话簿</string>
@@ -888,7 +888,7 @@
     <string name="enable_cactus_tips">双进程前台服务/JobScheduler/WorkManager/1像素/无声音乐</string>
     <string name="music_interval">唤醒间隔</string>
     <string name="load_app_list">启动时异步获取已安装App列表</string>
-    <string name="load_app_list_tips">用于加速进入应用列表/编辑转发规则下拉选择/替换{{APP_NAME}}</string>
+    <string name="load_app_list_tips">用于加速进入应用列表/编辑同步规则下拉选择/替换{{APP_NAME}}</string>
     <string name="load_app_list_toast">开启异步获取已安装App列表时必选一个类型</string>
     <string name="no_server_history">暂无历史记录，接口测试通过后自动加入</string>
     <string name="select_time_period">时间段选择</string>
@@ -1178,7 +1178,7 @@
     <string name="specified_task">指定任务</string>
 
     <string name="multi_languages">多语言设置</string>
-    <string name="multi_languages_tips">SmsForwarder启动时界面默认显示的语言</string>
+    <string name="multi_languages_tips">KoSync启动时界面默认显示的语言</string>
     <string name="multi_languages_toast">需要重启App以便切换到您选择的语言</string>
     <string name="follow_system">跟随系统</string>
     <string name="simplified_chinese">简体中文</string>

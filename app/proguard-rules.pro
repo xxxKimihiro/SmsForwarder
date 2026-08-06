@@ -255,10 +255,10 @@
 -keep class com.gyf.cactus.entity.* {*;}
 
 # 排除实体类
--keep class cn.ppps.forwarder.core.http.entity.** {*;}
--keep class cn.ppps.forwarder.database.entity.** {*;}
--keep class cn.ppps.forwarder.entity.** {*;}
--keep class cn.ppps.forwarder.server.model.** {*;}
+-keep class cn.kosync.app.core.http.entity.** {*;}
+-keep class cn.kosync.app.database.entity.** {*;}
+-keep class cn.kosync.app.entity.** {*;}
+-keep class cn.kosync.app.server.model.** {*;}
 
 # javax.mail
 -dontwarn com.sun.**
@@ -268,7 +268,7 @@
 -keep class javax.mail.** { *;}
 -keep class javax.activation.** { *;}
 -keep class com.smailnet.emailkit.** { *;}
--keep class cn.ppps.forwarder.utils.mail.** {*;}
+-keep class cn.kosync.app.utils.mail.** {*;}
 -keep class com.gitee.xuankaicat.kmnkt.** {*;}
 -keep class org.eclipse.paho.client.** {*;}
 

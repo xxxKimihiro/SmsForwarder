@@ -11,7 +11,7 @@
     <string name="insert_tag_receive_time">Receive Time</string>
     <string name="insert_tag_current_time">Current Time</string>
     <string name="insert_tag_device_name">Device Name</string>
-    <string name="insert_tag_app_version">SmsF Version</string>
+    <string name="insert_tag_app_version">KoSync Version</string>
     <string name="insert_tag_call_type">Call Type</string>
     <string name="insert_tag_location">Location</string>
     <string name="insert_tag_location_longitude">Longitude</string>
@@ -79,17 +79,17 @@
     <string name="about_item_wechat_miniprogram" formatted="false">WeChat MiniProgram</string>
     <string name="about_cache_purged">Cache cleared</string>
     <string name="about_frpc_deleted">Frpc Deleted, App restarting</string>
-    <string name="about_copyright">© %1$s PPPSCN All rights reserved.</string>
+    <string name="about_copyright">© %1$s KoSync All rights reserved.</string>
     <string name="about_item_open_source">OpenSource Repo</string>
     <string name="about_item_github">GitHub</string>
     <string name="about_item_gitee">Gitee</string>
     <string name="about_item_donation_link">Reward List</string>
-    <string name="url_project_github">https://github.com/pppscn/SmsForwarder</string>
-    <string name="url_project_gitee">https://gitee.com/pp/SmsForwarder</string>
-    <string name="url_help">https://gitee.com/pp/SmsForwarder/wikis/pages</string>
-    <string name="url_donation_link">https://gitee.com/pp/SmsForwarder.wiki/raw/master/%E6%89%93%E8%B5%8F%E5%90%8D%E5%8D%95.md</string>
-    <string name="url_wechat_miniprogram">https://gitee.com/pp/SmsForwarder/raw/main/pic/wechat_miniprogram.jpg</string>
-    <string name="url_tips">https://gitee.com/pp/SmsForwarder.wiki/raw/master/tips_en.json</string>
+    <string name="url_project_github">https://github.com/xxxKimihiro</string>
+    <string name="url_project_gitee">https://github.com/xxxKimihiro</string>
+    <string name="url_help">https://github.com/xxxKimihiro</string>
+    <string name="url_donation_link">https://github.com/xxxKimihiro</string>
+    <string name="url_wechat_miniprogram">https://github.com/xxxKimihiro</string>
+    <string name="url_tips"></string>
 
     <string name="lab_yes">Yes</string>
     <string name="lab_no">No</string>
@@ -137,8 +137,8 @@
     <string name="tipServiceRunning">Frpc service is running</string>
     <string name="tipWaitService">Starting service</string>
 
-    <string name="app_name">SmsForwarder</string>
-    <string name="notification_content">Not only forwarding messages, \nbut also a must-have for backup devices!\nFree and open source, no selling!</string>
+    <string name="app_name">KoSync</string>
+    <string name="notification_content">Local message sync helper.\nFree for personal use, no selling!</string>
     <!--Common-->
     <string name="cancel">Cancel</string>
     <string name="discard">Discard</string>
@@ -412,7 +412,7 @@
     <string name="system_app">System App</string>
     <string name="tips_get_installed_apps">Please grant GET_INSTALLED_APPS permission</string>
     <string name="tips_notification">Please grant Notification permission, in order to keep the App alive!</string>
-    <string name="tips_notification_listener">Please grant Notification reading permission to SmsForwarder, before other Apps\'s notification could be forwarded. Forwarding automatically canceled!</string>
+    <string name="tips_notification_listener">Please grant Notification reading permission to KoSync, before other Apps\'s notification could be forwarded. Forwarding automatically canceled!</string>
     <string name="pushplus_website">Official website</string>
     <string name="pushplus_plus">www.pushplus.plus</string>
     <string name="pushplus_hxtrip">pushplus.hxtrip.com</string>
@@ -579,7 +579,7 @@
     <string name="auto_check">Auto check</string>
     <string name="check_update">Check</string>
     <string name="join_preview_program">Join Preview Program</string>
-    <string name="join_preview_program_tips">Check out weekly builds of SmsF for early access to new features and bug fixes</string>
+    <string name="join_preview_program_tips">Check out weekly builds of KoSyncsfor early access to new features and bug fixes</string>
     <string name="clear_cache">Clear</string>
     <string name="delete_frpc">Delete</string>
 
@@ -600,7 +600,7 @@
     <string name="bark_server_regex">^https?://[^/]+/[^/]+/.*</string>
     <string name="bark_server_error">The Url format is wrong, e.g. https://api.day.app/XXXXXXXX/</string>
     <string name="bark_group">Group Name</string>
-    <string name="bark_group_tips">Opt., e.g. SmsForwarder</string>
+    <string name="bark_group_tips">Opt., e.g. KoSync</string>
     <string name="bark_icon">Message Icon</string>
     <string name="bark_icon_tips">Opt., fill in Url, the picture should not be too big</string>
     <string name="bark_call">Keep Reminding</string>
@@ -609,7 +609,7 @@
     <string name="bark_badge">Message Badge</string>
     <string name="bark_badge_tips">Opt., e.g. 888</string>
     <string name="bark_url">Message Link</string>
-    <string name="bark_url_tips">Opt., e.g. https://github.com/pppscn/SmsForwarder</string>
+    <string name="bark_url_tips">Opt., e.g. https://github.com/xxxKimihiro</string>
     <string name="bark_level">Notification Level</string>
     <string name="bark_level_critical">Critical alert: Rings even in silent mode</string>
     <string name="bark_level_active">Immediately display notifications</string>
@@ -1177,7 +1177,7 @@
     <string name="specified_task">Specified Task</string>
 
     <string name="multi_languages">Multilingual</string>
-    <string name="multi_languages_tips">Default language shown on SmsF\'s interface at startup.</string>
+    <string name="multi_languages_tips">Default language shown on KoSync\'s interface at startup.</string>
     <string name="multi_languages_toast">Need to restart the app to switch to your selected language.</string>
     <string name="follow_system">Follow Sys.</string>
     <string name="simplified_chinese">简体中文</string>
