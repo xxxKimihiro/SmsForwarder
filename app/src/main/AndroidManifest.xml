@@ -206,13 +206,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden"
             tools:ignore="DiscouragedApi" />
-        <!-- 版本更新提示-->
-        <activity
-            android:name=".utils.update.UpdateTipDialog"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/DialogTheme"
-            tools:ignore="DiscouragedApi" />
         <!-- Webview拦截提示弹窗-->
         <activity
             android:name=".core.webview.WebViewInterceptDialog"

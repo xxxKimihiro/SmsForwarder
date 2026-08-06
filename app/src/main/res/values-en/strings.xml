@@ -690,6 +690,7 @@
     <string name="no_sms_sending_permission">No SMS sending permission</string>
     <string name="frpclib_download_title">Missing FrpcLib v%s</string>
     <string name="frpclib_download_content">Downloading, please wait…</string>
+    <string name="frpclib_remote_download_disabled">Remote FrpcLib download is disabled in this clean build. Place the matching libgojni.so under the app private libs directory and restart.</string>
     <string name="frpclib_version_mismatch">FrpcLib version mismatch</string>
     <string name="page_not_found">Page not found!</string>
     <string name="data_error">Data error!</string>

@@ -691,6 +691,7 @@
     <string name="no_sms_sending_permission">沒有簡訊發送權限</string>
     <string name="frpclib_download_title">缺少 FrpcLib v%s 動態庫</string>
     <string name="frpclib_download_content">正在下載中，請稍後……</string>
+    <string name="frpclib_remote_download_disabled">純淨版已禁用從遠程伺服器下載 FrpcLib，請自行將對應架構的 libgojni.so 放到應用私有目錄 libs 下後重啟。</string>
     <string name="frpclib_version_mismatch">FrpcLib 版本不匹配</string>
     <string name="page_not_found">頁面未找到！</string>
     <string name="data_error">數據出錯！</string>

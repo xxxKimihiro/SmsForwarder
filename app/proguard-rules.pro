@@ -237,9 +237,6 @@
 # 如果使用了 单类注入，即不定义接口实现 IProvider，需添加下面规则，保护实现
 -keep class * implements com.xuexiang.xrouter.facade.template.IProvider
 
-# xupdate
--keep class com.xuexiang.xupdate.entity.** { *; }
-
 # xvideo
 -keep class com.xuexiang.xvideo.jniinterface.** { *; }
 
@@ -250,16 +247,6 @@
 }
 -keepclassmembers class * {
     @com.xuexiang.xipc.annotation.* <methods>;
-}
-
-# umeng统计
--keep class com.umeng.** {*;}
--keepclassmembers class * {
-   public <init> (org.json.JSONObject);
-}
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
 }
 
 -keep class com.xuexiang.xui.widget.edittext.materialedittext.** { *; }
