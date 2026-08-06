@@ -95,13 +95,14 @@ android {
         release {
             keyAlias keyProps['keyAlias']
             keyPassword keyProps['keyPassword']
-            storeFile keyProps['storeFile'] ? file(keyProps['storeFile']) : null
+            // storeFile 相对仓库根目录，例如 keystore/smsforwarder-self.p12
+            storeFile keyProps['storeFile'] ? rootProject.file(keyProps['storeFile']) : null
             storePassword keyProps['storePassword']
         }
         debug {
             keyAlias keyProps['keyAlias']
             keyPassword keyProps['keyPassword']
-            storeFile keyProps['storeFile'] ? file(keyProps['storeFile']) : null
+            storeFile keyProps['storeFile'] ? rootProject.file(keyProps['storeFile']) : null
             storePassword keyProps['storePassword']
         }
     }
