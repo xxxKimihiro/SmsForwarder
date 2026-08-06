@@ -1,58 +1,65 @@
 name: Release
 
-# 触发器
+# fork 自用：使用仓库内 keystore 签名，无需上游 TOKEN / pppscn/keystore
+# - Actions 页手动 Run workflow：打 release APK 并上传 Artifact
+# - 推送 v* tag：打包并创建 GitHub Release
 on:
   push:
     tags:
-      - v*
-  pull_request:
-    tags:
-      - v*
+      - 'v*'
   workflow_dispatch:
-    inputs:
-      root_sol:
-        description: "Release Title"
-        required: true
-        default: "SmsForwarder"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OUTPUT_DIR: ${{ github.workspace }}/build/app/outputs/apk/release
     steps:
-      # 检出代码
-      - uses: actions/checkout@v4
-      # 设置jdk环境为11
-      - name: set up JDK 11
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 11
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '11'
           java-package: jdk
-      # 获取打包秘钥
-      - name: Checkout Android Keystore
-        uses: actions/checkout@v4
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Check signing config
+        run: |
+          set -euo pipefail
+          test -f keystore/keystore.properties
+          store_file=$(grep '^storeFile=' keystore/keystore.properties | cut -d= -f2-)
+          test -f "$store_file"
+          echo "Using keystore: $store_file"
+
+      - name: Build release APKs
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew
+          ./gradlew assembleRelease --no-daemon
+
+      - name: List outputs
+        run: ls -lah "${OUTPUT_DIR}"
+
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
         with:
-          repository: pppscn/keystore
-          token: ${{ secrets.TOKEN }} # 连接仓库的token,需要单独配置
-          path: keystore # 仓库的根目录名
-      # 打包release
-      - name: Build with Gradle
-        run: bash ./gradlew assembleRelease
-      # 创建release
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: SmsForwarder-release
+          path: ${{ env.OUTPUT_DIR }}/SmsF_*_release.apk
+          if-no-files-found: error
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: SmsForwarder ${{ github.ref }}
+          name: SmsForwarder ${{ github.ref_name }}
           draft: false
           prerelease: false
-      # 上传至release的资源
-      - name: Upload release binaries
-        uses: alexellis/upload-assets@0.2.2
+          generate_release_notes: true
+          files: ${{ env.OUTPUT_DIR }}/SmsF_*_release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          asset_paths: '["./build/app/outputs/apk/release/SmsF_*"]'
