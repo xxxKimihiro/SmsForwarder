@@ -1,6 +1,7 @@
 name: Release
 
-# fork 自用：使用仓库内 keystore 签名，无需上游 TOKEN / pppscn/keystore
+# fork 自用：签名来自 GitHub Secrets，不把密钥提交进仓库
+# 需要配置：KEYSTORE_BASE64 / KEYSTORE_PASS / ALIAS_NAME / ALIAS_PASS
 # - Actions 页手动 Run workflow：打 release APK 并上传 Artifact
 # - 推送 v* tag：打包并创建 GitHub Release
 on:
@@ -28,13 +29,29 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Check signing config
+      - name: Prepare signing keystore from secrets
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          ALIAS_NAME: ${{ secrets.ALIAS_NAME }}
+          ALIAS_PASS: ${{ secrets.ALIAS_PASS }}
         run: |
           set -euo pipefail
-          test -f keystore/keystore.properties
-          store_file=$(grep '^storeFile=' keystore/keystore.properties | cut -d= -f2-)
-          test -f "$store_file"
-          echo "Using keystore: $store_file"
+          if [ -z "${KEYSTORE_BASE64}" ] || [ -z "${KEYSTORE_PASS}" ] || [ -z "${ALIAS_NAME}" ] || [ -z "${ALIAS_PASS}" ]; then
+            echo "Missing signing secrets. Please add repository secrets:"
+            echo "  KEYSTORE_BASE64, KEYSTORE_PASS, ALIAS_NAME, ALIAS_PASS"
+            exit 1
+          fi
+          mkdir -p keystore
+          echo "${KEYSTORE_BASE64}" | base64 -d > keystore/smsforwarder-self.p12
+          {
+            echo "keyAlias=${ALIAS_NAME}"
+            echo "keyPassword=${ALIAS_PASS}"
+            echo "storeFile=keystore/smsforwarder-self.p12"
+            echo "storePassword=${KEYSTORE_PASS}"
+          } > keystore/keystore.properties
+          test -s keystore/smsforwarder-self.p12
+          echo "Signing keystore prepared."
 
       - name: Build release APKs
         run: |

@@ -23,6 +23,9 @@
 /build
 /captures
 /local.properties
+# 自用签名：只提交 example，真实 keystore / 密码不进仓库
+/keystore/*
+!/keystore/keystore.properties.example
 /pic/*.bkp
 /pic/*.drawio
 /pic/*.vsdx

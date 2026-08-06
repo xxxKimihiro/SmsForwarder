@@ -1,6 +1,7 @@
 name: Weekly Build
 
-# fork 自用周构建：不再依赖上游 keystore / XUpdate / secrets.TOKEN
+# fork 自用周构建：签名来自 GitHub Secrets
+# 需要配置：KEYSTORE_BASE64 / KEYSTORE_PASS / ALIAS_NAME / ALIAS_PASS
 on:
   schedule:
     - cron: '0 15 * * 0' # 每周日 UTC 15:00
@@ -40,14 +41,30 @@ jobs:
         if: env.skip != 'true'
         uses: android-actions/setup-android@v3
 
-      - name: Check signing config
+      - name: Prepare signing keystore from secrets
         if: env.skip != 'true'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          ALIAS_NAME: ${{ secrets.ALIAS_NAME }}
+          ALIAS_PASS: ${{ secrets.ALIAS_PASS }}
         run: |
           set -euo pipefail
-          test -f keystore/keystore.properties
-          store_file=$(grep '^storeFile=' keystore/keystore.properties | cut -d= -f2-)
-          test -f "$store_file"
-          echo "Using keystore: $store_file"
+          if [ -z "${KEYSTORE_BASE64}" ] || [ -z "${KEYSTORE_PASS}" ] || [ -z "${ALIAS_NAME}" ] || [ -z "${ALIAS_PASS}" ]; then
+            echo "Missing signing secrets. Please add repository secrets:"
+            echo "  KEYSTORE_BASE64, KEYSTORE_PASS, ALIAS_NAME, ALIAS_PASS"
+            exit 1
+          fi
+          mkdir -p keystore
+          echo "${KEYSTORE_BASE64}" | base64 -d > keystore/smsforwarder-self.p12
+          {
+            echo "keyAlias=${ALIAS_NAME}"
+            echo "keyPassword=${ALIAS_PASS}"
+            echo "storeFile=keystore/smsforwarder-self.p12"
+            echo "storePassword=${KEYSTORE_PASS}"
+          } > keystore/keystore.properties
+          test -s keystore/smsforwarder-self.p12
+          echo "Signing keystore prepared."
 
       - name: Build release APKs
         if: env.skip != 'true'
