@@ -18,9 +18,7 @@ import cn.ppps.forwarder.utils.CommonUtils.Companion.restartApplication
 import cn.ppps.forwarder.utils.HistoryUtils
 import cn.ppps.forwarder.utils.HttpServerUtils
 import cn.ppps.forwarder.utils.Log
-import cn.ppps.forwarder.utils.SettingUtils
 import cn.ppps.forwarder.utils.XToastUtils
-import cn.ppps.forwarder.utils.sdkinit.XUpdateInit
 import com.xuexiang.xaop.annotation.SingleClick
 import com.xuexiang.xpage.annotation.Page
 import com.xuexiang.xui.widget.actionbar.TitleBar
@@ -64,25 +62,9 @@ class AboutFragment : BaseFragment<FragmentAboutBinding?>(), SuperTextView.OnSup
         val dateFormat = SimpleDateFormat("yyyy", Locale.CHINA)
         val currentYear = dateFormat.format(Date())
         binding!!.copyright.text = java.lang.String.format(resources.getString(R.string.about_copyright), currentYear)
-
-        binding!!.scbAutoCheckUpdate.isChecked = SettingUtils.autoCheckUpdate
-        binding!!.scbAutoCheckUpdate.setOnCheckedChangeListener { _, isChecked ->
-            SettingUtils.autoCheckUpdate = isChecked
-        }
-
-        binding!!.sbJoinPreviewProgram.isChecked = SettingUtils.joinPreviewProgram
-        binding!!.sbJoinPreviewProgram.setOnCheckedChangeListener { _, isChecked ->
-            SettingUtils.joinPreviewProgram = isChecked
-            if (isChecked) {
-                XToastUtils.success(getString(R.string.join_preview_program_tips))
-            }
-        }
     }
 
     override fun initListeners() {
-        binding!!.btnUpdate.setOnClickListener {
-            XUpdateInit.checkUpdate(requireContext(), true, SettingUtils.joinPreviewProgram)
-        }
         binding!!.btnCache.setOnClickListener {
             HistoryUtils.clearPreference()
             CacheUtils.clearAllCache(requireContext())
@@ -116,7 +98,6 @@ class AboutFragment : BaseFragment<FragmentAboutBinding?>(), SuperTextView.OnSup
             AgentWebActivity.goWeb(context, getString(R.string.url_project_gitee))
         }
 
-        binding!!.menuJoinPreviewProgram.setOnSuperTextViewClickListener(this)
         binding!!.menuVersion.setOnSuperTextViewClickListener(this)
         binding!!.menuWechatMiniprogram.setOnSuperTextViewClickListener(this)
         binding!!.menuDonation.setOnSuperTextViewClickListener(this)
@@ -127,10 +108,6 @@ class AboutFragment : BaseFragment<FragmentAboutBinding?>(), SuperTextView.OnSup
     @SingleClick
     override fun onClick(v: SuperTextView) {
         when (v.id) {
-            R.id.menu_join_preview_program -> {
-                XToastUtils.info(getString(R.string.join_preview_program_tips))
-            }
-
             R.id.menu_version -> {
                 XToastUtils.info(
                     String.format(

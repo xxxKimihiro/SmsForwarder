@@ -38,40 +38,27 @@ import cn.ppps.forwarder.fragment.SettingsFragment
 import cn.ppps.forwarder.fragment.TasksFragment
 import cn.ppps.forwarder.service.ForegroundService
 import cn.ppps.forwarder.utils.ACTION_START
-import cn.ppps.forwarder.utils.CommonUtils.Companion.restartApplication
 import cn.ppps.forwarder.utils.EVENT_LOAD_APP_LIST
-import cn.ppps.forwarder.utils.FRPC_LIB_DOWNLOAD_URL
 import cn.ppps.forwarder.utils.FRPC_LIB_VERSION
-import cn.ppps.forwarder.utils.Log
 import cn.ppps.forwarder.utils.SettingUtils
 import cn.ppps.forwarder.utils.XToastUtils
-import cn.ppps.forwarder.utils.sdkinit.XUpdateInit
-import cn.ppps.forwarder.widget.GuideTipsDialog.Companion.showTips
 import cn.ppps.forwarder.workers.LoadAppListWorker
 import com.jeremyliao.liveeventbus.LiveEventBus
-import com.xuexiang.xhttp2.XHttp
-import com.xuexiang.xhttp2.callback.DownloadProgressCallBack
-import com.xuexiang.xhttp2.exception.ApiException
 import com.xuexiang.xui.XUI.getContext
 import com.xuexiang.xui.utils.ResUtils
 import com.xuexiang.xui.utils.ThemeUtils
 import com.xuexiang.xui.utils.ViewUtils
 import com.xuexiang.xui.utils.WidgetUtils
-import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction
-import com.xuexiang.xui.widget.dialog.materialdialog.GravityEnum
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog
 import com.xuexiang.xutil.file.FileUtils
-import com.xuexiang.xutil.net.NetworkUtils
 import com.yarolegovich.slidingrootnav.SlideGravity
 import com.yarolegovich.slidingrootnav.SlidingRootNav
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder
 import com.yarolegovich.slidingrootnav.callback.DragStateListener
-import java.io.File
 
 @Suppress("PrivatePropertyName", "unused", "DEPRECATION")
 class MainActivity : BaseActivity<ActivityMainBinding?>(), DrawerAdapter.OnItemSelectedListener {
 
-    private val TAG: String = MainActivity::class.java.simpleName
     private val POS_LOG = 0
     private val POS_RULE = 1
     private val POS_SENDER = 2
@@ -182,12 +169,6 @@ class MainActivity : BaseActivity<ActivityMainBinding?>(), DrawerAdapter.OnItemS
     private fun initData() {
         mMenuTitles = ResUtils.getStringArray(this, R.array.menu_titles)
         mMenuIcons = ResUtils.getDrawableArray(this, R.array.menu_icons)
-
-        //仅当开启自动检查且有网络时自动检查更新/获取提示
-        if (SettingUtils.autoCheckUpdate && NetworkUtils.isHaveInternet()) {
-            showTips(this)
-            XUpdateInit.checkUpdate(this, false, SettingUtils.joinPreviewProgram)
-        }
     }
 
     //按返回键不退出回到桌面
@@ -276,12 +257,8 @@ class MainActivity : BaseActivity<ActivityMainBinding?>(), DrawerAdapter.OnItemS
 
                 MaterialDialog.Builder(this)
                     .title(title)
-                    .content(R.string.download_frpc_tips)
-                    .positiveText(R.string.lab_yes)
-                    .negativeText(R.string.lab_no)
-                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                        downloadFrpcLib()
-                    }
+                    .content(R.string.frpclib_remote_download_disabled)
+                    .positiveText(R.string.confirm)
                     .show()
             }
 
@@ -326,70 +303,6 @@ class MainActivity : BaseActivity<ActivityMainBinding?>(), DrawerAdapter.OnItemS
             .withTextTint(ThemeUtils.resolveColor(this, R.attr.xui_config_color_content_text))
             .withSelectedIconTint(ThemeUtils.getMainThemeColor(this))
             .withSelectedTextTint(ThemeUtils.getMainThemeColor(this))
-    }
-
-    //动态加载FrpcLib
-    private fun downloadFrpcLib() {
-        val cpuAbi = when (Build.CPU_ABI) {
-            "x86" -> "x86"
-            "x86_64" -> "x86_64"
-            "arm64-v8a" -> "arm64-v8a"
-            else -> "armeabi-v7a"
-        }
-
-        val libPath = filesDir.absolutePath + "/libs"
-        val soFile = File(libPath)
-        if (!soFile.exists()) soFile.mkdirs()
-        val downloadUrl = String.format(FRPC_LIB_DOWNLOAD_URL, FRPC_LIB_VERSION, cpuAbi)
-        val mContext = this
-        val dialog: MaterialDialog = MaterialDialog.Builder(mContext)
-            .title(String.format(getString(R.string.frpclib_download_title), FRPC_LIB_VERSION))
-            .content(getString(R.string.frpclib_download_content))
-            .contentGravity(GravityEnum.CENTER)
-            .progress(false, 0, true)
-            .progressNumberFormat("%2dMB/%1dMB")
-            .build()
-
-        XHttp.downLoad(downloadUrl)
-            .ignoreHttpsCert()
-            .savePath(cacheDir.absolutePath)
-            .execute(object : DownloadProgressCallBack<String?>() {
-                override fun onStart() {
-                    dialog.show()
-                }
-
-                override fun onError(e: ApiException) {
-                    dialog.dismiss()
-                    XToastUtils.error(e.message.toString())
-                }
-
-                override fun update(bytesRead: Long, contentLength: Long, done: Boolean) {
-                    Log.d(TAG, "onProgress: bytesRead=$bytesRead, contentLength=$contentLength")
-                    dialog.maxProgress = (contentLength / 1048576L).toInt()
-                    dialog.setProgress((bytesRead / 1048576L).toInt())
-                }
-
-                override fun onComplete(srcPath: String) {
-                    dialog.dismiss()
-                    Log.d(TAG, "srcPath = $srcPath")
-
-                    val srcFile = File(srcPath)
-                    val destFile = File("$libPath/libgojni.so")
-                    FileUtils.moveFile(srcFile, destFile, null)
-
-                    MaterialDialog.Builder(this@MainActivity)
-                        .iconRes(R.drawable.ic_menu_frpc)
-                        .title(R.string.menu_frpc)
-                        .content(R.string.download_frpc_tips2)
-                        .cancelable(false)
-                        .positiveText(R.string.confirm)
-                        .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                            restartApplication()
-                        }
-                        .show()
-                }
-            })
-
     }
 
 }
