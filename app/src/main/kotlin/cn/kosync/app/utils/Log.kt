@@ -150,7 +150,7 @@ object Log {
         return AndroidLog.getStackTraceString(throwable)
     }
 
-    private fun shouldPersist(level: String, tag: String): Boolean {
+    private fun shouldPersist(@Suppress("UNUSED_PARAMETER") level: String, tag: String): Boolean {
         if (App.isDebug) return true
         // 双机 / 内置 Tailscale：没开调试模式也落盘，方便甩文件
         return tag.contains("Tsnet", ignoreCase = true) || tag.contains("Peer", ignoreCase = true)
