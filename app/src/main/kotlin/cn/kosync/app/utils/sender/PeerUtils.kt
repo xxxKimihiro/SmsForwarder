@@ -55,7 +55,7 @@ class PeerUtils {
             )
             val body = buildRequestJson(data, setting.secret, timestamp)
             val requestUrl = PeerSyncLogic.buildBaseUrl(setting.address, setting.port) + "/peer/ingest"
-            Log.i(TAG, "requestUrl:$requestUrl peerId=$peerId")
+            Log.i(TAG, "ingest $requestUrl peerId=$peerId via=${tsnetVia()}")
 
             val request = XHttp.post(requestUrl)
                 .upJson(body)
@@ -97,7 +97,7 @@ class PeerUtils {
             val data = PeerSyncData(sinceTime, sinceMsgId, limit)
             val body = buildRequestJson(data, secret, System.currentTimeMillis())
             val requestUrl = PeerSyncLogic.buildBaseUrl(address, port) + "/peer/sync"
-            Log.i(TAG, "requestUrl:$requestUrl sinceTime=$sinceTime sinceMsgId=$sinceMsgId")
+            Log.i(TAG, "sync $requestUrl sinceTime=$sinceTime sinceMsgId=$sinceMsgId via=${tsnetVia()}")
 
             val request = XHttp.post(requestUrl)
                 .upJson(body)
@@ -132,9 +132,19 @@ class PeerUtils {
                 })
         }
 
+        private fun tsnetVia(): String {
+            return if (HttpServerUtils.enableTsnet && TsnetEngine.isRunning()) {
+                "tsnet socks=${TsnetEngine.socksPort()} self=${TsnetEngine.selfIP()}"
+            } else {
+                "direct enableTsnet=${HttpServerUtils.enableTsnet} running=${TsnetEngine.isRunning()}"
+            }
+        }
+
         fun isReachable(address: String, port: Int, timeoutMs: Int = PeerSyncLogic.PROBE_TIMEOUT_MS): Boolean {
             if (HttpServerUtils.enableTsnet && TsnetEngine.isRunning()) {
-                return TsnetEngine.probe(address, port, timeoutMs)
+                val ok = TsnetEngine.probe(address, port, timeoutMs)
+                Log.d(TAG, "probe $address:$port via=tsnet ok=$ok")
+                return ok
             }
             return try {
                 Socket().use { socket ->

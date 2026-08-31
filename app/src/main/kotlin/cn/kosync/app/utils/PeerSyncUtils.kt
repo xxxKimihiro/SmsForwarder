@@ -18,7 +18,7 @@ object PeerSyncUtils {
         }
         val existing = Core.msg.findIdByPeerId(peerId)
         if (PeerSyncLogic.isDuplicate(existing)) {
-            Log.d(TAG, "skip duplicate peerId=$peerId existingId=$existing")
+            Log.i(TAG, "skip duplicate peerId=$peerId existingId=$existing")
             return PeerIngestResult(ingested = false, duplicate = true, msgId = existing ?: 0)
         }
         val time = if (data.time > 0) Date(data.time) else Date()
@@ -35,13 +35,14 @@ object PeerSyncUtils {
             peerId
         )
         val msgId = Core.msg.insertSync(msg)
-        Log.d(TAG, "ingested peerId=$peerId msgId=$msgId")
+        Log.i(TAG, "ingested peerId=$peerId msgId=$msgId type=${data.type} from=${data.from}")
         return PeerIngestResult(ingested = true, duplicate = false, msgId = msgId)
     }
 
     fun listForSync(req: PeerSyncData): List<PeerMessageData> {
         val limit = PeerSyncLogic.normalizeLimit(req.limit)
         val msgs = Core.msg.listSince(req.sinceTime, req.sinceMsgId, limit)
+        Log.i(TAG, "sync export sinceTime=${req.sinceTime} sinceMsgId=${req.sinceMsgId} limit=$limit count=${msgs.size}")
         val deviceMark = SettingUtils.extraDeviceMark
         return msgs.map { it.toPeerMessage(deviceMark) }
     }

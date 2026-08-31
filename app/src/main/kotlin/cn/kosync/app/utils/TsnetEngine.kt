@@ -82,6 +82,7 @@ object TsnetEngine {
         val authKey = HttpServerUtils.tsnetAuthKey
         val hostname = HttpServerUtils.tsnetHostname.ifBlank { SettingUtils.extraDeviceMark.ifBlank { "kosync" } }
         val port = HttpServerUtils.serverPort.toLong()
+        Log.i(TAG, "start hostname=$hostname port=$port authKey=${if (authKey.isBlank()) "empty" else "set"} stateDir=$stateDir")
         io.execute {
             try {
                 val err = Tsnetbind.start(stateDir, authKey, hostname, port, port)
@@ -110,6 +111,7 @@ object TsnetEngine {
                 Tsnetbind.stop()
             }
             lastMessage = "stopped"
+            Log.i(TAG, "stopped")
         } catch (e: Exception) {
             lastMessage = e.message ?: "stop error"
             Log.e(TAG, lastMessage)

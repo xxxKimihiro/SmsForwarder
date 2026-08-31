@@ -329,6 +329,7 @@ class ServerFragment : BaseFragment<FragmentServerBinding?>(), View.OnClickListe
         binding!!.sbTsnet.isChecked = HttpServerUtils.enableTsnet
         binding!!.sbTsnet.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             HttpServerUtils.enableTsnet = isChecked
+            Log.i("TsnetEngine", "switch enableTsnet=$isChecked running=${TsnetEngine.isRunning()}")
             if (!isChecked && TsnetEngine.isRunning()) {
                 TsnetEngine.stop()
             }

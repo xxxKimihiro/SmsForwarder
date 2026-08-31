@@ -214,6 +214,7 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
             }
 
             if (HttpServerUtils.enableTsnet) {
+                Log.i("TsnetEngine", "App.onCreate auto-start tsnet")
                 TsnetEngine.startAsync(this)
             }
 
