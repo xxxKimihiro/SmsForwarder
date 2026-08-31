@@ -11,6 +11,7 @@ import cn.kosync.app.utils.HTTP_SUCCESS_CODE
 import cn.kosync.app.utils.HttpServerUtils
 import cn.kosync.app.utils.Log
 import cn.kosync.app.utils.PeerSyncLogic
+import cn.kosync.app.utils.TsnetEngine
 import cn.kosync.app.utils.SendUtils
 import cn.kosync.app.utils.SettingUtils
 import cn.kosync.app.utils.interceptor.LoggingInterceptor
@@ -56,10 +57,12 @@ class PeerUtils {
             val requestUrl = PeerSyncLogic.buildBaseUrl(setting.address, setting.port) + "/peer/ingest"
             Log.i(TAG, "requestUrl:$requestUrl peerId=$peerId")
 
-            XHttp.post(requestUrl)
+            val request = XHttp.post(requestUrl)
                 .upJson(body)
                 .keepJson(true)
                 .ignoreHttpsCert()
+            TsnetEngine.applySocksProxy(request)
+            request
                 .retryCount(SettingUtils.requestRetryTimes)
                 .retryDelay(SettingUtils.requestDelayTime * 1000)
                 .retryIncreaseDelay(SettingUtils.requestDelayTime * 1000)
@@ -96,10 +99,12 @@ class PeerUtils {
             val requestUrl = PeerSyncLogic.buildBaseUrl(address, port) + "/peer/sync"
             Log.i(TAG, "requestUrl:$requestUrl sinceTime=$sinceTime sinceMsgId=$sinceMsgId")
 
-            XHttp.post(requestUrl)
+            val request = XHttp.post(requestUrl)
                 .upJson(body)
                 .keepJson(true)
                 .ignoreHttpsCert()
+            TsnetEngine.applySocksProxy(request)
+            request
                 .timeStamp(true)
                 .execute(object : SimpleCallBack<String>() {
                     override fun onError(e: ApiException) {
@@ -128,6 +133,9 @@ class PeerUtils {
         }
 
         fun isReachable(address: String, port: Int, timeoutMs: Int = PeerSyncLogic.PROBE_TIMEOUT_MS): Boolean {
+            if (HttpServerUtils.enableTsnet && TsnetEngine.isRunning()) {
+                return TsnetEngine.probe(address, port, timeoutMs)
+            }
             return try {
                 Socket().use { socket ->
                     socket.connect(InetSocketAddress(address, port), timeoutMs)

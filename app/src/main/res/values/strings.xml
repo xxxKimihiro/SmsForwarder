@@ -694,6 +694,16 @@
     <string name="peer_resync_failed">同步失败：</string>
     <string name="peer_resync_empty">已是最新，没有新消息</string>
     <string name="peer_resync_done">同步完成：新增 %1$d，重复 %2$d，共 %3$d</string>
+    <string name="tsnet_title">内置 Tailscale 通道</string>
+    <string name="tsnet_tips">仅本应用走 Tailscale（userspace），不挂系统 VPN。关闭则走手机当前网络（含系统 VPN / 路由）。</string>
+    <string name="tsnet_hostname">节点主机名（可选）</string>
+    <string name="tsnet_auth_key">Auth key（首次入网，之后可留空）</string>
+    <string name="tsnet_start">启动内置通道</string>
+    <string name="tsnet_stop">停止内置通道</string>
+    <string name="tsnet_status_off">未启动。对端填 100.x 或本机显示的 Tailscale IP。</string>
+    <string name="tsnet_status_on">已连接 %1$s ，本机 SOCKS 127.0.0.1:%2$d</string>
+    <string name="tsnet_missing">未编入 tsnetbind.aar，无法启动内置通道</string>
+    <string name="tsnet_starting">正在加入 tailnet…</string>
 
     <string name="webhook_server">Webhook Server</string>
     <string name="webhook_server_tips">例如：https://a.b.com/msg?token=xyz</string>

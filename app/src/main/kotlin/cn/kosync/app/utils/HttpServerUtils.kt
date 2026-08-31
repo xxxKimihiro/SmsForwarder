@@ -112,6 +112,13 @@ class HttpServerUtils private constructor() {
 
         var peerSyncSinceMsgId: Long by SharedPreference(SP_PEER_SYNC_SINCE_MSG_ID, 0L)
 
+        // 内置 Tailscale（userspace，不挂系统 VPN）
+        var enableTsnet: Boolean by SharedPreference(SP_ENABLE_TSNET, false)
+
+        var tsnetAuthKey: String by SharedPreference(SP_TSNET_AUTH_KEY, "")
+
+        var tsnetHostname: String by SharedPreference(SP_TSNET_HOSTNAME, "")
+
         //远程找手机定位缓存
         var apiLocationCache: LocationInfo by SharedPreference(SP_API_LOCATION_CACHE, LocationInfo())
 

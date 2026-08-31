@@ -235,6 +235,9 @@ const val SP_PEER_SYNC_PORT = "peer_sync_port"
 const val SP_PEER_SYNC_SIGN_KEY = "peer_sync_sign_key"
 const val SP_PEER_SYNC_SINCE_TIME = "peer_sync_since_time"
 const val SP_PEER_SYNC_SINCE_MSG_ID = "peer_sync_since_msg_id"
+const val SP_ENABLE_TSNET = "enable_tsnet"
+const val SP_TSNET_AUTH_KEY = "tsnet_auth_key"
+const val SP_TSNET_HOSTNAME = "tsnet_hostname"
 
 
 //自动任务

@@ -27,6 +27,7 @@ import cn.kosync.app.utils.SM4Crypt
 import cn.kosync.app.utils.SettingUtils
 import cn.kosync.app.utils.PeerSyncLogic
 import cn.kosync.app.utils.PeerSyncUtils
+import cn.kosync.app.utils.TsnetEngine
 import cn.kosync.app.utils.XToastUtils
 import cn.kosync.app.utils.sender.PeerUtils
 import com.hjq.permissions.OnPermissionCallback
@@ -199,6 +200,7 @@ class ServerFragment : BaseFragment<FragmentServerBinding?>(), View.OnClickListe
         binding!!.btnSignKey.setOnClickListener(this)
         binding!!.btnPathPicker.setOnClickListener(this)
         binding!!.btnPeerResync.setOnClickListener(this)
+        binding!!.btnTsnetToggle.setOnClickListener(this)
         binding!!.etSignKey.setText(HttpServerUtils.serverSignKey)
         binding!!.etSignKey.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -324,6 +326,32 @@ class ServerFragment : BaseFragment<FragmentServerBinding?>(), View.OnClickListe
             }
         })
 
+        binding!!.sbTsnet.isChecked = HttpServerUtils.enableTsnet
+        binding!!.sbTsnet.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            HttpServerUtils.enableTsnet = isChecked
+            if (!isChecked && TsnetEngine.isRunning()) {
+                TsnetEngine.stop()
+            }
+            refreshTsnetStatus()
+        }
+        binding!!.etTsnetHostname.setText(HttpServerUtils.tsnetHostname)
+        binding!!.etTsnetHostname.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                HttpServerUtils.tsnetHostname = binding!!.etTsnetHostname.text.toString().trim()
+            }
+        })
+        binding!!.etTsnetAuthKey.setText(HttpServerUtils.tsnetAuthKey)
+        binding!!.etTsnetAuthKey.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                HttpServerUtils.tsnetAuthKey = binding!!.etTsnetAuthKey.text.toString().trim()
+            }
+        })
+        refreshTsnetStatus()
+
     }
 
     @SingleClick
@@ -447,6 +475,10 @@ class ServerFragment : BaseFragment<FragmentServerBinding?>(), View.OnClickListe
                 requestPeerResync()
             }
 
+            R.id.btn_tsnet_toggle -> {
+                toggleTsnet()
+            }
+
             else -> {}
         }
     }
@@ -521,6 +553,52 @@ class ServerFragment : BaseFragment<FragmentServerBinding?>(), View.OnClickListe
             binding!!.btnToggleServer.text = resources.getText(R.string.start_server)
             binding!!.tvServerTips.text = getString(R.string.http_server_stopped)
             binding!!.ivCopy.visibility = View.GONE
+        }
+    }
+
+    private fun refreshTsnetStatus() {
+        if (!TsnetEngine.available()) {
+            binding!!.tvTsnetStatus.text = getString(R.string.tsnet_missing)
+            binding!!.btnTsnetToggle.text = getString(R.string.tsnet_start)
+            return
+        }
+        if (TsnetEngine.isRunning()) {
+            val ip = TsnetEngine.selfIP().ifBlank { "—" }
+            binding!!.tvTsnetStatus.text = getString(R.string.tsnet_status_on, ip, TsnetEngine.socksPort())
+            binding!!.btnTsnetToggle.text = getString(R.string.tsnet_stop)
+        } else {
+            val extra = TsnetEngine.lastMessage
+            binding!!.tvTsnetStatus.text = if (extra.isNotBlank() && extra != "stopped" && extra != "disabled") {
+                getString(R.string.tsnet_status_off) + "\n" + extra
+            } else {
+                getString(R.string.tsnet_status_off)
+            }
+            binding!!.btnTsnetToggle.text = getString(R.string.tsnet_start)
+        }
+    }
+
+    private fun toggleTsnet() {
+        if (TsnetEngine.isRunning()) {
+            TsnetEngine.stop()
+            refreshTsnetStatus()
+            return
+        }
+        if (!HttpServerUtils.enableTsnet) {
+            HttpServerUtils.enableTsnet = true
+            binding!!.sbTsnet.isChecked = true
+        }
+        HttpServerUtils.tsnetAuthKey = binding!!.etTsnetAuthKey.text.toString().trim()
+        HttpServerUtils.tsnetHostname = binding!!.etTsnetHostname.text.toString().trim()
+        binding!!.tvTsnetStatus.text = getString(R.string.tsnet_starting)
+        binding!!.btnTsnetToggle.isEnabled = false
+        TsnetEngine.startAsync(requireContext()) { ok, msg ->
+            handler.post {
+                binding!!.btnTsnetToggle.isEnabled = true
+                if (!ok) {
+                    XToastUtils.error(msg)
+                }
+                refreshTsnetStatus()
+            }
         }
     }
 

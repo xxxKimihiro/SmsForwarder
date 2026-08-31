@@ -254,6 +254,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //frpc
     implementation files('libs/frpclib.aar')
+    def tsnetAar = file('libs/tsnetbind.aar')
+    if (tsnetAar.exists()) {
+        implementation files(tsnetAar)
+    }
 
     //MQTT协议
     implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")

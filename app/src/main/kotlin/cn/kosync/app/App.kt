@@ -44,6 +44,7 @@ import cn.kosync.app.utils.FRONT_NOTIFY_ID
 import cn.kosync.app.utils.FRPC_LIB_VERSION
 import cn.kosync.app.utils.HistoryUtils
 import cn.kosync.app.utils.HttpServerUtils
+import cn.kosync.app.utils.TsnetEngine
 import cn.kosync.app.utils.Log
 import cn.kosync.app.utils.ProximitySensorScreenHelper
 import cn.kosync.app.utils.SettingUtils
@@ -210,6 +211,10 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
                 Intent(this, HttpServerService::class.java).also {
                     startService(it)
                 }
+            }
+
+            if (HttpServerUtils.enableTsnet) {
+                TsnetEngine.startAsync(this)
             }
 
             //启动LocationService
