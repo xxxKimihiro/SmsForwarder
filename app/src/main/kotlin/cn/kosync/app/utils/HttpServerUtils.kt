@@ -98,6 +98,27 @@ class HttpServerUtils private constructor() {
         //是否启用远程找手机
         var enableApiLocation: Boolean by SharedPreference(SP_ENABLE_API_LOCATION, false)
 
+        //是否启用双机收发 / 重同步
+        var enableApiPeer: Boolean by SharedPreference(SP_ENABLE_API_PEER, true)
+
+        //接收端请求重同步时使用的对端地址
+        var peerSyncAddress: String by SharedPreference(SP_PEER_SYNC_ADDRESS, "")
+
+        var peerSyncPort: Int by SharedPreference(SP_PEER_SYNC_PORT, HTTP_SERVER_PORT)
+
+        var peerSyncSignKey: String by SharedPreference(SP_PEER_SYNC_SIGN_KEY, "")
+
+        var peerSyncSinceTime: Long by SharedPreference(SP_PEER_SYNC_SINCE_TIME, 0L)
+
+        var peerSyncSinceMsgId: Long by SharedPreference(SP_PEER_SYNC_SINCE_MSG_ID, 0L)
+
+        // 内置 Tailscale（userspace，不挂系统 VPN）
+        var enableTsnet: Boolean by SharedPreference(SP_ENABLE_TSNET, false)
+
+        var tsnetAuthKey: String by SharedPreference(SP_TSNET_AUTH_KEY, "")
+
+        var tsnetHostname: String by SharedPreference(SP_TSNET_HOSTNAME, "")
+
         //远程找手机定位缓存
         var apiLocationCache: LocationInfo by SharedPreference(SP_API_LOCATION_CACHE, LocationInfo())
 

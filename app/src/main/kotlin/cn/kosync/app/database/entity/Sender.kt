@@ -16,6 +16,7 @@ import cn.kosync.app.utils.TYPE_GOTIFY
 import cn.kosync.app.utils.TYPE_PUSHPLUS
 import cn.kosync.app.utils.TYPE_SERVERCHAN
 import cn.kosync.app.utils.TYPE_SMS
+import cn.kosync.app.utils.TYPE_PEER
 import cn.kosync.app.utils.TYPE_SOCKET
 import cn.kosync.app.utils.TYPE_TELEGRAM
 import cn.kosync.app.utils.TYPE_URL_SCHEME
@@ -55,6 +56,7 @@ data class Sender(
             TYPE_FEISHU_APP -> R.drawable.icon_feishu_app
             TYPE_URL_SCHEME -> R.drawable.icon_url_scheme
             TYPE_SOCKET -> R.drawable.icon_socket
+            TYPE_PEER -> R.drawable.icon_peer
             else -> R.drawable.icon_sms
         }
 

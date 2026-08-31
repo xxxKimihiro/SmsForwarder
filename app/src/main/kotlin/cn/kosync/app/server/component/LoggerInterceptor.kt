@@ -43,6 +43,7 @@ class LoggerInterceptor : HandlerInterceptor {
                 || (httpPath.startsWith("/wol/send") && !HttpServerUtils.enableApiWol)
                 || (httpPath.startsWith("/location/query") && !HttpServerUtils.enableApiLocation)
                 || (httpPath.startsWith("/battery/query") && !HttpServerUtils.enableApiBatteryQuery)
+                || (httpPath.startsWith("/peer") && !HttpServerUtils.enableApiPeer)
             ) {
                 throw HttpException(500, getString(R.string.disabled_on_the_server))
             }

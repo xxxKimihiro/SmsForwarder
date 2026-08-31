@@ -47,7 +47,7 @@ object Log {
             throw IllegalStateException("Log not initialized. Call init(context) first.")
         }
 
-        if (!App.isDebug) return
+        if (!shouldPersist(level, tag)) return
 
         Thread {
             try {
@@ -148,6 +148,12 @@ object Log {
 
     fun getStackTraceString(throwable: Throwable): String {
         return AndroidLog.getStackTraceString(throwable)
+    }
+
+    private fun shouldPersist(@Suppress("UNUSED_PARAMETER") level: String, tag: String): Boolean {
+        if (App.isDebug) return true
+        // 双机 / 内置 Tailscale：没开调试模式也落盘，方便甩文件
+        return tag.contains("Tsnet", ignoreCase = true) || tag.contains("Peer", ignoreCase = true)
     }
 
     fun isLoggable(tag: String?, level: Int): Boolean {

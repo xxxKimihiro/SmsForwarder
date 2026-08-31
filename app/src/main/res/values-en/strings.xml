@@ -648,6 +648,31 @@
     <string name="url_scheme_tips">Example：myapp://api/add?&amp;type=0&amp;msg=[msg]</string>
 
     <string name="socket">Socket</string>
+    <string name="peer">Peer Sync</string>
+    <string name="peer_address">Peer address</string>
+    <string name="peer_address_tips">Enter the peer Tailscale IP (e.g. 100.x.y.z) or MagicDNS hostname. The peer must enable HttpServer and the Peer Sync API.</string>
+    <string name="peer_address_hint">100.x.y.z or hostname</string>
+    <string name="peer_port">Port</string>
+    <string name="peer_secret">Sign key</string>
+    <string name="peer_secret_tips">Must match the peer server sign key. Leave empty if the peer has no signature check.</string>
+    <string name="api_peer">Peer sync</string>
+    <string name="api_peer_tips">Allow another KoSync to push messages over Tailscale/LAN and respond to resync requests</string>
+    <string name="peer_resync_title">Request resync</string>
+    <string name="peer_resync_tips">Enter the sender address and pull missed messages once (duplicates are skipped)</string>
+    <string name="peer_resync">Request resync</string>
+    <string name="peer_resync_failed">Resync failed: </string>
+    <string name="peer_resync_empty">Already up to date</string>
+    <string name="peer_resync_done">Resync done: %1$d new, %2$d duplicate, %3$d total</string>
+    <string name="tsnet_title">Built-in Tailscale</string>
+    <string name="tsnet_tips">Only this app uses Tailscale (userspace), no system VPN. Off = phone network (system VPN / router).</string>
+    <string name="tsnet_hostname">Node hostname (optional)</string>
+    <string name="tsnet_auth_key">Auth key (first join; can be empty later)</string>
+    <string name="tsnet_start">Start built-in channel</string>
+    <string name="tsnet_stop">Stop built-in channel</string>
+    <string name="tsnet_status_off">Stopped. Peer should use this device 100.x / Tailscale IP.</string>
+    <string name="tsnet_status_on">Connected %1$s , local SOCKS 127.0.0.1:%2$d</string>
+    <string name="tsnet_missing">libtsnetbind.so not packaged</string>
+    <string name="tsnet_starting">Joining tailnet…</string>
 
     <string name="webhook_server">Webhook Server</string>
     <string name="webhook_server_tips">For example: https://a.b.com/msg?token=xyz</string>

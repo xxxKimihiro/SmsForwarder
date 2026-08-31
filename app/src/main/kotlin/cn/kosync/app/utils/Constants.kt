@@ -148,6 +148,7 @@ const val TYPE_DINGTALK_INNER_ROBOT = 12
 const val TYPE_FEISHU_APP = 13
 const val TYPE_URL_SCHEME = 14
 const val TYPE_SOCKET = 15
+const val TYPE_PEER = 16
 
 //前台服务
 const val FRONT_NOTIFY_ID = 0x1010
@@ -228,6 +229,15 @@ const val SP_SERVER_HISTORY = "server_history"
 const val SP_SERVER_CONFIG = "server_config"
 const val SP_CLIENT_SAFETY_MEASURES = "client_safety_measures"
 const val SP_CLIENT_SIGN_KEY = "client_sign_key"
+const val SP_ENABLE_API_PEER = "enable_api_peer"
+const val SP_PEER_SYNC_ADDRESS = "peer_sync_address"
+const val SP_PEER_SYNC_PORT = "peer_sync_port"
+const val SP_PEER_SYNC_SIGN_KEY = "peer_sync_sign_key"
+const val SP_PEER_SYNC_SINCE_TIME = "peer_sync_since_time"
+const val SP_PEER_SYNC_SINCE_MSG_ID = "peer_sync_since_msg_id"
+const val SP_ENABLE_TSNET = "enable_tsnet"
+const val SP_TSNET_AUTH_KEY = "tsnet_auth_key"
+const val SP_TSNET_HOSTNAME = "tsnet_hostname"
 
 
 //自动任务

@@ -72,4 +72,7 @@ interface LogsDao {
     @Transaction
     @RawQuery(observedEntities = [Logs::class])
     fun getLogsRaw(query: SupportSQLiteQuery): List<Logs>
+
+    @Query("SELECT id FROM Logs WHERE sender_id=:senderId AND forward_status=0 ORDER BY id ASC")
+    fun getFailedIdsBySender(senderId: Long): List<Long>
 }

@@ -209,7 +209,8 @@ android {
 
     sourceSets {
         main {
-            jniLibs.srcDirs = ['libs']
+            // libs: 兼容旧路径；src/main/jniLibs: libtsnetbind.so
+            jniLibs.srcDirs = ['libs', 'src/main/jniLibs']
         }
     }
     lint {

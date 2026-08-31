@@ -39,4 +39,6 @@ class LogsRepository(private val logsDao: LogsDao) {
         return logsDao.getLogsRaw(query)
     }
 
+    fun getFailedIdsBySender(senderId: Long): List<Long> = logsDao.getFailedIdsBySender(senderId)
+
 }

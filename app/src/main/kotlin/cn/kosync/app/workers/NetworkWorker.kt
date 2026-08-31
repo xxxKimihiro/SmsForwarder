@@ -147,6 +147,10 @@ class NetworkWorker(context: Context, params: WorkerParameters) : CoroutineWorke
                 WorkManager.getInstance().enqueue(actionRequest)
             }
 
+            if (TaskUtils.networkState != 0) {
+                WorkManager.getInstance().enqueue(OneTimeWorkRequestBuilder<PeerRetryWorker>().build())
+            }
+
             return Result.success()
         } catch (e: Exception) {
             Log.e(TAG, "Error running worker: ${e.message}", e)

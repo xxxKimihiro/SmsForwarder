@@ -259,6 +259,7 @@
 -keep class cn.kosync.app.database.entity.** {*;}
 -keep class cn.kosync.app.entity.** {*;}
 -keep class cn.kosync.app.server.model.** {*;}
+-keep class cn.kosync.tsnet.Tsnetbind { *; }
 
 # javax.mail
 -dontwarn com.sun.**

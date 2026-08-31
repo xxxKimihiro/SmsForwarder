@@ -21,6 +21,15 @@ interface MsgDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(msg: Msg): Long
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertSync(msg: Msg): Long
+
+    @Query("SELECT id FROM Msg WHERE peer_id = :peerId LIMIT 1")
+    fun findIdByPeerId(peerId: String): Long?
+
+    @Query("SELECT * FROM Msg WHERE time > :sinceTime OR (time = :sinceTime AND id > :sinceMsgId) ORDER BY time ASC, id ASC LIMIT :limit")
+    fun listSince(sinceTime: Long, sinceMsgId: Long, limit: Int): List<Msg>
+
     @Delete
     fun delete(msg: Msg): Completable
 
