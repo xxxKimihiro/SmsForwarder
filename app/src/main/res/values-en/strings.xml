@@ -671,7 +671,7 @@
     <string name="tsnet_stop">Stop built-in channel</string>
     <string name="tsnet_status_off">Stopped. Peer should use this device 100.x / Tailscale IP.</string>
     <string name="tsnet_status_on">Connected %1$s , local SOCKS 127.0.0.1:%2$d</string>
-    <string name="tsnet_missing">tsnetbind.aar not packaged</string>
+    <string name="tsnet_missing">libtsnetbind.so not packaged</string>
     <string name="tsnet_starting">Joining tailnet…</string>
 
     <string name="webhook_server">Webhook Server</string>

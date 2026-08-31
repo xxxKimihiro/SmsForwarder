@@ -672,7 +672,7 @@
     <string name="tsnet_stop">停止內建通道</string>
     <string name="tsnet_status_off">未啟動。對端填 100.x 或本機顯示的 Tailscale IP。</string>
     <string name="tsnet_status_on">已連線 %1$s ，本機 SOCKS 127.0.0.1:%2$d</string>
-    <string name="tsnet_missing">未編入 tsnetbind.aar，無法啟動內建通道</string>
+    <string name="tsnet_missing">未編入 libtsnetbind.so，無法啟動內建通道</string>
     <string name="tsnet_starting">正在加入 tailnet…</string>
 
     <string name="webhook_server">Webhook Server</string>

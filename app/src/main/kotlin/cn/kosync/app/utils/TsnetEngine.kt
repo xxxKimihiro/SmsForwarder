@@ -1,8 +1,8 @@
 package cn.kosync.app.utils
 
 import android.content.Context
+import cn.kosync.tsnet.Tsnetbind
 import java.io.File
-import java.lang.reflect.Method
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.net.Socket
@@ -11,26 +11,52 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * 可选内置 Tailscale（userspace）。不申请 VpnService。
- * 运行时反射调用 tsnetbind AAR；未编进 AAR 时 available()=false。
+ * 走独立 libtsnetbind.so，避免和 frpclib 的 gomobile libgojni 撞车。
  */
 object TsnetEngine {
     private const val TAG = "TsnetEngine"
     private val io = Executors.newSingleThreadExecutor()
     private val starting = AtomicBoolean(false)
 
+    private val loaded: Boolean by lazy {
+        try {
+            Tsnetbind.touch()
+            true
+        } catch (e: Throwable) {
+            Log.e(TAG, "libtsnetbind.so 未编入: ${e.message}")
+            false
+        }
+    }
+
     @Volatile
     var lastMessage: String = ""
         private set
 
-    fun available(): Boolean = nativeClass() != null
+    fun available(): Boolean = loaded
 
-    fun isRunning(): Boolean = invokeBool("running", "Running")
+    fun isRunning(): Boolean = if (!available()) false else try {
+        Tsnetbind.running()
+    } catch (_: Exception) {
+        false
+    }
 
-    fun selfIP(): String = invokeString("selfIP", "SelfIP")
+    fun selfIP(): String = if (!available()) "" else try {
+        Tsnetbind.selfIP()
+    } catch (_: Exception) {
+        ""
+    }
 
-    fun socksPort(): Int = invokeInt("socksPort", "SocksPort")
+    fun socksPort(): Int = if (!available()) 0 else try {
+        Tsnetbind.socksPort().toInt()
+    } catch (_: Exception) {
+        0
+    }
 
-    fun lastError(): String = invokeString("lastError", "LastError")
+    fun lastError(): String = if (!available()) "" else try {
+        Tsnetbind.lastError()
+    } catch (_: Exception) {
+        ""
+    }
 
     fun startAsync(context: Context, onDone: ((Boolean, String) -> Unit)? = null) {
         if (!HttpServerUtils.enableTsnet) {
@@ -38,7 +64,7 @@ object TsnetEngine {
             return
         }
         if (!available()) {
-            val msg = "tsnetbind.aar 未编入，先运行 tsnetbind/build-aar.sh"
+            val msg = "libtsnetbind.so 未编入，先运行 tsnetbind/build-so.sh"
             lastMessage = msg
             Log.e(TAG, msg)
             onDone?.invoke(false, msg)
@@ -55,11 +81,11 @@ object TsnetEngine {
         val stateDir = File(context.filesDir, "tsnet").absolutePath
         val authKey = HttpServerUtils.tsnetAuthKey
         val hostname = HttpServerUtils.tsnetHostname.ifBlank { SettingUtils.extraDeviceMark.ifBlank { "kosync" } }
-        val port = HttpServerUtils.serverPort
+        val port = HttpServerUtils.serverPort.toLong()
         io.execute {
             try {
-                val err = invokeStart(stateDir, authKey, hostname, port, port)
-                if (err != null) {
+                val err = Tsnetbind.start(stateDir, authKey, hostname, port, port)
+                if (!err.isNullOrEmpty()) {
                     lastMessage = err
                     Log.e(TAG, "start failed: $err")
                     onDone?.invoke(false, err)
@@ -80,7 +106,9 @@ object TsnetEngine {
 
     fun stop() {
         try {
-            invokeVoid("stop", "Stop")
+            if (available()) {
+                Tsnetbind.stop()
+            }
             lastMessage = "stopped"
         } catch (e: Exception) {
             lastMessage = e.message ?: "stop error"
@@ -109,80 +137,5 @@ object TsnetEngine {
             }
         }
         return false
-    }
-
-    private fun nativeClass(): Class<*>? {
-        val names = arrayOf(
-            "cn.kosync.tsnet.tsnetbind.Tsnetbind",
-            "cn.kosync.tsnet.Tsnetbind",
-            "tsnetbind.Tsnetbind"
-        )
-        for (name in names) {
-            try {
-                return Class.forName(name)
-            } catch (_: ClassNotFoundException) {
-            }
-        }
-        return null
-    }
-
-    private fun method(vararg names: String, types: Array<out Class<*>> = emptyArray()): Method? {
-        val cls = nativeClass() ?: return null
-        for (name in names) {
-            try {
-                return cls.getMethod(name, *types)
-            } catch (_: Exception) {
-            }
-        }
-        return null
-    }
-
-    private fun invokeStart(stateDir: String, authKey: String, hostname: String, advertisePort: Int, localPort: Int): String? {
-        // gomobile maps Go int -> Java long, and exports camelCase: start(...)
-        val str = String::class.java
-        val longT = java.lang.Long.TYPE
-        val intT = java.lang.Integer.TYPE
-        val m = method("start", "Start", types = arrayOf(str, str, str, longT, longT))
-            ?: method("start", "Start", types = arrayOf(str, str, str, intT, intT))
-            ?: return "start() not found"
-        return try {
-            val params = m.parameterTypes
-            if (params.size >= 5 && params[3] == java.lang.Long.TYPE) {
-                m.invoke(null, stateDir, authKey, hostname, advertisePort.toLong(), localPort.toLong())
-            } else {
-                m.invoke(null, stateDir, authKey, hostname, advertisePort, localPort)
-            }
-            null
-        } catch (e: Exception) {
-            e.cause?.message ?: e.message
-        }
-    }
-
-    private fun invokeVoid(vararg names: String) {
-        method(*names)?.invoke(null)
-    }
-
-    private fun invokeBool(vararg names: String): Boolean {
-        return try {
-            method(*names)?.invoke(null) as? Boolean ?: false
-        } catch (_: Exception) {
-            false
-        }
-    }
-
-    private fun invokeString(vararg names: String): String {
-        return try {
-            method(*names)?.invoke(null) as? String ?: ""
-        } catch (_: Exception) {
-            ""
-        }
-    }
-
-    private fun invokeInt(vararg names: String): Int {
-        return try {
-            (method(*names)?.invoke(null) as? Number)?.toInt() ?: 0
-        } catch (_: Exception) {
-            0
-        }
     }
 }

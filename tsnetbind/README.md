@@ -2,19 +2,20 @@
 
 KoSync 内置 Tailscale（userspace / tsnet）：不创建 TUN，不申请 VpnService。
 
-本机提供 `127.0.0.1:<socks>` SOCKS5，Peer HTTP 走这条代理；同时在 tailnet 上监听 `:5000` 并转到本机 HttpServer。
+本机提供 `127.0.0.1:<socks>` SOCKS5，Peer HTTP 走这条代理；同时在 tailnet 上监听 HttpServer 端口并转到本机。
 
-## 编译 AAR
+用独立 `libtsnetbind.so` + JNI，**不用 gomobile**，避免和已有 `frpclib.aar` 的 `libgojni.so` / `go.Seq` 冲突。
 
-需要 Go 1.22+、Android NDK、`gomobile`。
+## 编译 .so
+
+需要 Go 1.22+、Android NDK。
 
 ```bash
-export ANDROID_HOME=/opt/android-sdk
-export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/<version>
-./tsnetbind/build-aar.sh
+export ANDROID_NDK_HOME=/opt/android-sdk/ndk/<version>
+./tsnetbind/build-so.sh
 ```
 
-产物：`app/libs/tsnetbind.aar`（约 30MB，arm + arm64）。
+产物：`app/src/main/jniLibs/{arm64-v8a,armeabi-v7a}/libtsnetbind.so`（每个 ABI 约十余 MB）。
 
 ## Auth key
 

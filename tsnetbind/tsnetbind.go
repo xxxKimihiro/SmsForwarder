@@ -1,4 +1,4 @@
-package tsnetbind
+package main
 
 import (
 	"context"
