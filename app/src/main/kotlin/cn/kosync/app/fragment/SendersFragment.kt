@@ -29,6 +29,7 @@ import cn.kosync.app.fragment.senders.GotifyFragment
 import cn.kosync.app.fragment.senders.PushplusFragment
 import cn.kosync.app.fragment.senders.ServerchanFragment
 import cn.kosync.app.fragment.senders.SmsFragment
+import cn.kosync.app.fragment.senders.PeerFragment
 import cn.kosync.app.fragment.senders.SocketFragment
 import cn.kosync.app.fragment.senders.TelegramFragment
 import cn.kosync.app.fragment.senders.UrlSchemeFragment
@@ -49,6 +50,7 @@ import cn.kosync.app.utils.TYPE_GOTIFY
 import cn.kosync.app.utils.TYPE_PUSHPLUS
 import cn.kosync.app.utils.TYPE_SERVERCHAN
 import cn.kosync.app.utils.TYPE_SMS
+import cn.kosync.app.utils.TYPE_PEER
 import cn.kosync.app.utils.TYPE_SOCKET
 import cn.kosync.app.utils.TYPE_TELEGRAM
 import cn.kosync.app.utils.TYPE_URL_SCHEME
@@ -199,6 +201,13 @@ class SendersFragment : BaseFragment<FragmentSendersBinding?>(),
             "{\"\":\"\"}",
             CoreAnim.slide,
             R.drawable.icon_socket
+        ),
+        PageInfo(
+            getString(R.string.peer),
+            "cn.kosync.app.fragment.senders.PeerFragment",
+            "{\"\":\"\"}",
+            CoreAnim.slide,
+            R.drawable.icon_peer
         ),
     )
 
@@ -354,6 +363,7 @@ class SendersFragment : BaseFragment<FragmentSendersBinding?>(),
             TYPE_FEISHU_APP -> FeishuAppFragment::class.java
             TYPE_URL_SCHEME -> UrlSchemeFragment::class.java
             TYPE_SOCKET -> SocketFragment::class.java
+            TYPE_PEER -> PeerFragment::class.java
             else -> DingtalkGroupRobotFragment::class.java
         }
     }

@@ -13,7 +13,8 @@ import java.util.Date
 @Entity(
     tableName = "Msg",
     indices = [
-        Index(value = ["id"], unique = true)
+        Index(value = ["id"], unique = true),
+        Index(value = ["peer_id"])
     ]
 )
 data class Msg(
@@ -28,6 +29,7 @@ data class Msg(
     //通话类型：1.来电挂机 2.去电挂机 3.未接来电 4.来电提醒 5.来电接通 6.去电拨出
     @ColumnInfo(name = "call_type", defaultValue = "0") var callType: Int = 0,
     @ColumnInfo(name = "time") var time: Date = Date(),
+    @ColumnInfo(name = "peer_id", defaultValue = "") var peerId: String = "",
 ) : Parcelable {
 
     val simImageId: Int

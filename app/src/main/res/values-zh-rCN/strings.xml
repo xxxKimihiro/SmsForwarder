@@ -649,6 +649,21 @@
     <string name="url_scheme_tips">示例：myapp://api/add?&amp;type=0&amp;msg=[msg]</string>
 
     <string name="socket">Socket</string>
+    <string name="peer">双机同步</string>
+    <string name="peer_address">对端地址</string>
+    <string name="peer_address_tips">填写对端 Tailscale IP（如 100.x.y.z）或 MagicDNS 主机名。对端需开启 HttpServer 与「双机同步」接口。</string>
+    <string name="peer_address_hint">100.x.y.z 或主机名</string>
+    <string name="peer_port">端口</string>
+    <string name="peer_secret">签名密钥</string>
+    <string name="peer_secret_tips">需与对端「服务端签名密钥」一致；对端未开启签名校验时可留空。</string>
+    <string name="api_peer">双机收发</string>
+    <string name="api_peer_tips">允许另一台 KoSync 通过 Tailscale/内网推送消息，并响应重同步请求</string>
+    <string name="peer_resync_title">请求重新同步</string>
+    <string name="peer_resync_tips">填写发送端地址，向对端拉取一次漏发消息（已有消息会去重）</string>
+    <string name="peer_resync">请求重新同步</string>
+    <string name="peer_resync_failed">同步失败：</string>
+    <string name="peer_resync_empty">已是最新，没有新消息</string>
+    <string name="peer_resync_done">同步完成：新增 %1$d，重复 %2$d，共 %3$d</string>
 
     <string name="webhook_server">Webhook Server</string>
     <string name="webhook_server_tips">例如：https://a.b.com/msg?token=xyz</string>

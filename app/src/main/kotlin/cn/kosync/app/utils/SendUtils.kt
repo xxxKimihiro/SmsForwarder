@@ -20,6 +20,7 @@ import cn.kosync.app.entity.setting.GotifySetting
 import cn.kosync.app.entity.setting.PushplusSetting
 import cn.kosync.app.entity.setting.ServerchanSetting
 import cn.kosync.app.entity.setting.SmsSetting
+import cn.kosync.app.entity.setting.PeerSetting
 import cn.kosync.app.entity.setting.SocketSetting
 import cn.kosync.app.entity.setting.TelegramSetting
 import cn.kosync.app.entity.setting.UrlSchemeSetting
@@ -36,6 +37,7 @@ import cn.kosync.app.utils.sender.GotifyUtils
 import cn.kosync.app.utils.sender.PushplusUtils
 import cn.kosync.app.utils.sender.ServerchanUtils
 import cn.kosync.app.utils.sender.SmsUtils
+import cn.kosync.app.utils.sender.PeerUtils
 import cn.kosync.app.utils.sender.SocketUtils
 import cn.kosync.app.utils.sender.TelegramUtils
 import cn.kosync.app.utils.sender.UrlSchemeUtils
@@ -195,6 +197,11 @@ object SendUtils {
                 TYPE_SOCKET -> {
                     val settingVo = Gson().fromJson(sender.jsonSetting, SocketSetting::class.java)
                     SocketUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+                }
+
+                TYPE_PEER -> {
+                    val settingVo = Gson().fromJson(sender.jsonSetting, PeerSetting::class.java)
+                    PeerUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
                 }
 
                 else -> {

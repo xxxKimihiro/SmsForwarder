@@ -25,7 +25,10 @@ import cn.kosync.app.utils.Log
 import cn.kosync.app.utils.RandomUtils
 import cn.kosync.app.utils.SM4Crypt
 import cn.kosync.app.utils.SettingUtils
+import cn.kosync.app.utils.PeerSyncLogic
+import cn.kosync.app.utils.PeerSyncUtils
 import cn.kosync.app.utils.XToastUtils
+import cn.kosync.app.utils.sender.PeerUtils
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
@@ -195,6 +198,7 @@ class ServerFragment : BaseFragment<FragmentServerBinding?>(), View.OnClickListe
         //签名密钥
         binding!!.btnSignKey.setOnClickListener(this)
         binding!!.btnPathPicker.setOnClickListener(this)
+        binding!!.btnPeerResync.setOnClickListener(this)
         binding!!.etSignKey.setText(HttpServerUtils.serverSignKey)
         binding!!.etSignKey.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -287,6 +291,38 @@ class ServerFragment : BaseFragment<FragmentServerBinding?>(), View.OnClickListe
             serviceIntent.action = ACTION_RESTART
             requireContext().startService(serviceIntent)
         }
+
+        binding!!.sbApiPeer.isChecked = HttpServerUtils.enableApiPeer
+        binding!!.sbApiPeer.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            HttpServerUtils.enableApiPeer = isChecked
+        }
+        binding!!.etPeerSyncAddress.setText(HttpServerUtils.peerSyncAddress)
+        binding!!.etPeerSyncAddress.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                HttpServerUtils.peerSyncAddress = binding!!.etPeerSyncAddress.text.toString().trim()
+            }
+        })
+        binding!!.etPeerSyncPort.setText(HttpServerUtils.peerSyncPort.toString())
+        binding!!.etPeerSyncPort.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                val port = binding!!.etPeerSyncPort.text.toString().trim().toIntOrNull() ?: HTTP_SERVER_PORT
+                if (PeerSyncLogic.isValidPort(port)) {
+                    HttpServerUtils.peerSyncPort = port
+                }
+            }
+        })
+        binding!!.etPeerSyncSecret.setText(HttpServerUtils.peerSyncSignKey)
+        binding!!.etPeerSyncSecret.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                HttpServerUtils.peerSyncSignKey = binding!!.etPeerSyncSecret.text.toString().trim()
+            }
+        })
 
     }
 
@@ -407,8 +443,65 @@ class ServerFragment : BaseFragment<FragmentServerBinding?>(), View.OnClickListe
                     })
             }
 
+            R.id.btn_peer_resync -> {
+                requestPeerResync()
+            }
+
             else -> {}
         }
+    }
+
+    private fun requestPeerResync() {
+        val address = binding!!.etPeerSyncAddress.text.toString().trim()
+        if (!PeerSyncLogic.isValidHost(address)) {
+            XToastUtils.error(getString(R.string.invalid_ip))
+            return
+        }
+        val port = binding!!.etPeerSyncPort.text.toString().trim().toIntOrNull() ?: 0
+        if (!PeerSyncLogic.isValidPort(port)) {
+            XToastUtils.error(getString(R.string.invalid_port))
+            return
+        }
+        val secret = binding!!.etPeerSyncSecret.text.toString().trim()
+        HttpServerUtils.peerSyncAddress = address
+        HttpServerUtils.peerSyncPort = port
+        HttpServerUtils.peerSyncSignKey = secret
+        binding!!.btnPeerResync.isEnabled = false
+        PeerUtils.requestSync(
+            address,
+            port,
+            secret,
+            HttpServerUtils.peerSyncSinceTime,
+            HttpServerUtils.peerSyncSinceMsgId,
+            PeerSyncLogic.DEFAULT_LIMIT,
+            onError = { msg ->
+                binding!!.btnPeerResync.isEnabled = true
+                XToastUtils.error(getString(R.string.peer_resync_failed) + msg)
+            },
+            onSuccess = { list ->
+                binding!!.btnPeerResync.isEnabled = true
+                var ingested = 0
+                var duplicate = 0
+                for (item in list) {
+                    try {
+                        val result = PeerSyncUtils.ingest(item)
+                        if (result.ingested) ingested++ else if (result.duplicate) duplicate++
+                    } catch (e: Exception) {
+                        Log.e("ServerFragment", "ingest error: ${e.message}")
+                    }
+                }
+                if (list.isNotEmpty()) {
+                    val last = list.last()
+                    HttpServerUtils.peerSyncSinceTime = last.time
+                    HttpServerUtils.peerSyncSinceMsgId = last.msgId
+                }
+                if (list.isEmpty()) {
+                    XToastUtils.success(getString(R.string.peer_resync_empty))
+                } else {
+                    XToastUtils.success(getString(R.string.peer_resync_done, ingested, duplicate, list.size))
+                }
+            }
+        )
     }
 
     //刷新按钮
